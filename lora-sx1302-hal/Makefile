@@ -8,7 +8,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=lora-sx1302-hal
-PKG_VERSION:=2.0.1
+PKG_VERSION:=2.1.0
 PKG_RELEASE:=1
 
 #PKG_SOURCE_URL:=https://codeload.github.com/Lora-net/sx1302_hal/tar.gz/V$(PKG_VERSION)?
@@ -17,7 +17,7 @@ PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/thinpv/sx1302_hal
-PKG_SOURCE_VERSION:=b21e556326f637386923e8da5031187042874f30
+PKG_SOURCE_VERSION:=0c5139edab95db57e3251e915d938b9de98d2735
 
 PKG_MAINTAINER:=Xue Liu <liuxuenetmail@gmail.com>
 PKG_LICENSE_FILES:=LICENSE
@@ -34,5 +34,11 @@ define Package/libsx1302
   DEPENDS:=+kmod-spi-dev
 endef
 
+define Package/libsx1302/install
+	$(INSTALL_DIR) $(1)/usr/sbin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/packet_forwarder/lora_pkt_fwd $(1)/usr/sbin
+	$(INSTALL_DIR) $(1)/etc
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/packet_forwarder/global_conf.json.sx1250.AS923.USB $(1)/etc/global_conf.json
+endef
 
 $(eval $(call BuildPackage,libsx1302))
